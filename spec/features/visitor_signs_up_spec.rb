@@ -1,5 +1,4 @@
 require "spec_helper"
-include Warden::Test::Helpers
 
 feature 'Visitor signs up' do
   scenario 'with valid email and password' do
