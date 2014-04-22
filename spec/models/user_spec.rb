@@ -7,4 +7,10 @@ describe User do
   it "is invalid without an email" do
     FactoryGirl.build(:user, email: nil).should_not be_valid
   end
+  it "is invalid without a password" do
+    FactoryGirl.build(:user, password: nil).should_not be_valid
+  end
+  it "is invalid when passwords do not match" do
+    FactoryGirl.build(:user, password_confirmation: 'password2').should_not be_valid
+  end
 end
