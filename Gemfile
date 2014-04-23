@@ -19,6 +19,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'database_cleaner'
   gem 'capybara-webkit', '>= 1.0.0'
   gem 'shoulda-matchers'
 end

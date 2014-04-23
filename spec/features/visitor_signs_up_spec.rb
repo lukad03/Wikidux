@@ -6,6 +6,11 @@ feature 'Visitor signs up' do
     expect(page).to have_content('Log Out')
   end
 
+  scenario 'with invalid email' do
+    sign_up_with 'invalidexample.com', 'password'
+    expect(page).to have_content('Sign Up')
+  end
+
   def sign_up_with(email, password)
     visit '/users/sign_up'
 
