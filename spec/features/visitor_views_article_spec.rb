@@ -1,24 +1,27 @@
 require "spec_helper"
 
-feature 'Visitor navigates to article list' do
+feature 'Articles' do
 
-  scenario 'and reads through list' do
-    create_article
+  scenario 'are listed in the article index' do
+    create_articles
     visit '/articles'
-    expect(page).to have_selector(:link_or_button, 'article-1')
+    expect(page).to have_selector('div.article', count: 5)
   end
 
-  scenario 'and finds an article to read' do
+  scenario 'can be read individually' do
     create_article
     visit '/articles'
-    expect(page).to have_selector(:link_or_button, 'article-1')
+    click_link('Read Article')
 
-    click_link('article-1')
+    expect(page).to have_content("Back the truck up!")
+  end
 
+  def create_articles
+    create_list(:article, 5)
   end
 
   def create_article
-    FactoryGirl.create(:article)
+    create(:article)
   end
 
 end
