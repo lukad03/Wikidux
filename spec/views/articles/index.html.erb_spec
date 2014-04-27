@@ -1,0 +1,14 @@
+require 'spec_helper'
+
+describe 'articles/index.html.haml' do
+  it 'displays a list of articles' do
+    articles = [build_stubbed(:article), build_stubbed(:article)]
+    assign(:articles, articles)
+
+    render
+
+    articles.each do |article|
+      expect(rendered).to match(article.name)
+    end
+  end
+end

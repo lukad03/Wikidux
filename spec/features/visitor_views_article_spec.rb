@@ -5,7 +5,7 @@ feature 'Articles' do
   scenario 'are listed in the article index' do
     create_articles
     visit '/articles'
-    expect(page).to have_selector('div.article', count: 5)
+    expect(page).to have_selector('div.article', count: 2)
   end
 
   scenario 'can be read individually' do
@@ -17,7 +17,7 @@ feature 'Articles' do
   end
 
   def create_articles
-    create_list(:article, 5)
+    create_list(:article, 2)
   end
 
   def create_article

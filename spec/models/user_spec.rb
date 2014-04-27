@@ -16,4 +16,5 @@ describe User do
   it "is invalid when passwords do not match" do
     FactoryGirl.build(:user, password_confirmation: 'password2').should_not be_valid
   end
+  it { should have_many(:articles) }
 end
