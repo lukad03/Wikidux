@@ -25,7 +25,7 @@ class ArticlesController < ApplicationController
     if @article.save
       redirect_to '/articles'
     else
-      render "new"
+      render "new", :notice "Your article has been posted!"
     end
   end
 
