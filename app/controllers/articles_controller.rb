@@ -4,6 +4,7 @@ class ArticlesController < ApplicationController
     :only => [:new]
 
   def index
+    flash.keep
     @articles = Article.all
   end
 
@@ -12,7 +13,7 @@ class ArticlesController < ApplicationController
   end
 
   def new
-      @article = Article.new
+    @article = Article.new
   end
 
   def create
@@ -28,7 +29,8 @@ class ArticlesController < ApplicationController
 
   def require_login
     unless current_user
-      redirect_to articles_path, error: "You must log in to create an article"
+      redirect_to articles_path
+      flash[:error] = 'You must log in to create an article.'
     end
   end
 
