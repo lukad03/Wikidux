@@ -12,10 +12,38 @@ describe ArticlesController do
     end
   end
 
-  describe 'GET #new' do
+  describe 'POST #create' do
     context "when a user is not logged in" do
       it "redirects to index and returns an error" do
-        get 'new'
+        post :new, article: create(:article)
+
+        response.should_not be_success
+        expect redirect_to(articles_path)
+        expect(flash[:error])
+      end
+    end
+
+    pending "when a user is logged in" do
+      it "creates the article" do
+        user = create(:user)
+        login_as(user, :scope => :user)
+
+        expect{
+          post :new, article: create(:article)
+        }.to change(Article,:count).by(1)
+
+        expect redirect_to(articles_path)
+        expect(flash[:notice])
+      end
+    end
+  end
+
+  pending 'PUT #edit' do
+    context "when a user is not logged in" do
+      it "redirects to index and returns an error" do
+        article = create(:article)
+
+        put :edit, { id: article.id, title: "Smoked Sausage", content: article.content}
 
         response.should_not be_success
         expect redirect_to(articles_path)

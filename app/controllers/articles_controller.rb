@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
 
   before_filter :require_login,
-    :only => [:new]
+    :only => [:new, :edit]
 
   def index
     flash.keep
@@ -14,6 +14,10 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
+  end
+
+  def edit
+    @article = Article.find(params[:id])
   end
 
   def create
