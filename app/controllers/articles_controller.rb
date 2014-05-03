@@ -18,6 +18,13 @@ class ArticlesController < ApplicationController
 
   def edit
     @article = Article.find(params[:id])
+    if @article.save
+      redirect_to @article
+      flash[:notice] = 'Your article has been edited!'
+    else
+      flash[:error] = 'Your edits did not save. Please try again.'
+      redirect_to :edit
+    end
   end
 
   def create

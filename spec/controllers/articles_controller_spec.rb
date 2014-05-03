@@ -35,7 +35,7 @@ describe ArticlesController do
         response.should redirect_to(articles_path)
       end
 
-      it "creates a flash error" do
+      pending "creates a flash error" do
         expect( post_article.request.flash[:error] ).to_not be_nil
       end
     end
@@ -44,7 +44,7 @@ describe ArticlesController do
 
       it "creates an article" do
         create_logged_in_user
-        expect{post_article}.to change(Article, :count).by(1)
+        expect{ post_article }.to change( Article, :count ).by(1)
       end
 
       it "redirects to article" do
@@ -62,13 +62,23 @@ describe ArticlesController do
 
   describe 'PUT #edit' do
     context "when a user is not logged in" do
-      it "redirects to index and returns an error" do
+
+      it "returns an error" do
         create_article
+        edit_article
+        response.should_not be_success
+      end
 
-        put :edit, { id: create_article.id, title: "Smoked Sausage", content: create_article.content}
+      it "redirects to edit path" do
+        create_article
+        edit_article
+        response.should redirect_to(articles_path)
+      end
 
-        expect redirect_to(articles_path)
-        expect(flash[:error])
+      it "creates a flash error" do
+        create_article
+        edit_article
+        expect( edit_article.request.flash[:error] ).to_not be_nil
       end
     end
   end
@@ -79,5 +89,9 @@ describe ArticlesController do
 
   def post_article
     post :new, article: create_article
+  end
+
+  def edit_article
+    put :edit, { id: create_article.id, title: "Smoked Sausage", content: create_article.content}
   end
 end
