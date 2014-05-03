@@ -1,4 +1,5 @@
 require 'spec_helper'
+include RequestHelpers
 
 describe CategoriesController do
 
@@ -12,12 +13,35 @@ describe CategoriesController do
     end
 
     context 'when a category does exist' do
-      it "returns the categor" do
+      it "returns the category" do
           category = create(:category)
 
           get :show, {id: category.id, name: category.name}
-          expect(response).to be_success
+          response.should be_success
       end
     end
+  end
+
+  describe 'POST #create' do
+    context "when a user is not logged in" do
+
+      it "returns an error" do
+        post_category
+        response.should_not be_success
+      end
+
+      it "redirects to categories index" do
+        post_category
+        response.should redirect_to(categories_path)
+      end
+
+      it "creates a flash error" do
+        expect( post_category.request.flash[:error] ).to_not be_nil
+      end
+    end
+  end
+
+  def post_category
+    post :new, category: create(:category)
   end
 end

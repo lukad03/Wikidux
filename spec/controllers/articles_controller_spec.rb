@@ -1,4 +1,5 @@
 require 'spec_helper'
+include RequestHelpers
 
 describe ArticlesController do
 
@@ -13,34 +14,48 @@ describe ArticlesController do
 
     context "when an article does exist" do
       it "returns the article" do
-        article = create(:article)
-        get :show, {id: article.id, title: article.title, content: article.content}
+        create_article
+        get :show, {id: create_article.id, title: create_article.title, content: create_article.content}
         expect(response).to be_success
       end
     end
   end
 
   describe 'POST #create' do
-    context "when a user is not logged in" do
-      it "redirects to index and returns an error" do
-        post :new, article: create(:article)
 
-        expect redirect_to(articles_path)
-        expect(flash[:error])
+    context "when a user is not logged in" do
+
+      it "returns an error" do
+        post_article
+        response.should_not be_success
+      end
+
+      it "redirects to articles index" do
+        post_article
+        response.should redirect_to(articles_path)
+      end
+
+      it "creates a flash error" do
+        expect( post_article.request.flash[:error] ).to_not be_nil
       end
     end
 
     context "when a user is logged in" do
-      it "creates the article" do
-        user = create(:user)
-        login_as(user, :scope => :user)
 
-        expect{
-          post :new, article: create(:article)
-        }.to change(Article, :count).by(1)
+      it "creates an article" do
+        create_logged_in_user
+        expect{post_article}.to change(Article, :count).by(1)
+      end
 
-        expect redirect_to(articles_path)
-        expect(flash[:notice])
+      it "redirects to article" do
+        create_logged_in_user
+        post_article
+
+        response.should redirect_to(articles_path)
+      end
+
+      pending "creates a flash notice" do
+        expect( post_article.request.flash[:notice] ).to_not be_nil
       end
     end
   end
@@ -48,13 +63,21 @@ describe ArticlesController do
   describe 'PUT #edit' do
     context "when a user is not logged in" do
       it "redirects to index and returns an error" do
-        article = create(:article)
+        create_article
 
-        put :edit, { id: article.id, title: "Smoked Sausage", content: article.content}
+        put :edit, { id: create_article.id, title: "Smoked Sausage", content: create_article.content}
 
         expect redirect_to(articles_path)
         expect(flash[:error])
       end
     end
+  end
+
+  def create_article
+    create(:article)
+  end
+
+  def post_article
+    post :new, article: create_article
   end
 end
