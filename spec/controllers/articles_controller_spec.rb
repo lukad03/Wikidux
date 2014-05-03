@@ -10,6 +10,14 @@ describe ArticlesController do
         end
       end
     end
+
+    context "when an article does exist" do
+      it "returns the article" do
+        article = create(:article)
+        get :show, {id: article.id, title: article.title, content: article.content}
+        expect(response).to be_success
+      end
+    end
   end
 
   describe 'POST #create' do
@@ -17,20 +25,19 @@ describe ArticlesController do
       it "redirects to index and returns an error" do
         post :new, article: create(:article)
 
-        response.should_not be_success
         expect redirect_to(articles_path)
         expect(flash[:error])
       end
     end
 
-    pending "when a user is logged in" do
+    context "when a user is logged in" do
       it "creates the article" do
         user = create(:user)
         login_as(user, :scope => :user)
 
         expect{
           post :new, article: create(:article)
-        }.to change(Article,:count).by(1)
+        }.to change(Article, :count).by(1)
 
         expect redirect_to(articles_path)
         expect(flash[:notice])
@@ -38,14 +45,13 @@ describe ArticlesController do
     end
   end
 
-  pending 'PUT #edit' do
+  describe 'PUT #edit' do
     context "when a user is not logged in" do
       it "redirects to index and returns an error" do
         article = create(:article)
 
         put :edit, { id: article.id, title: "Smoked Sausage", content: article.content}
 
-        response.should_not be_success
         expect redirect_to(articles_path)
         expect(flash[:error])
       end

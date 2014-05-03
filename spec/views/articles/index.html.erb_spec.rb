@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'articles/index.html.haml' do
+describe 'articles/index.html.erb' do
   it 'displays a list of articles' do
     articles = [build_stubbed(:article), build_stubbed(:article)]
     assign(:articles, articles)
@@ -8,7 +8,7 @@ describe 'articles/index.html.haml' do
     render
 
     articles.each do |article|
-      expect(rendered).to match(article.name)
+      expect(rendered).to match(article.title)
     end
   end
 end

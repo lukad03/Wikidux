@@ -23,9 +23,11 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.create(article_params)
     if @article.save
-      redirect_to '/articles'
+      redirect_to articles_path
+      flash[:notice] = 'Your article has been posted!'
     else
-      render "new", :notice "Your article has been posted!"
+      flash[:error] = 'Your article failed to post!'
+      redirect_to :new
     end
   end
 
@@ -34,7 +36,7 @@ class ArticlesController < ApplicationController
   def require_login
     unless current_user
       redirect_to articles_path
-      flash[:error] = 'You must log in to create an article.'
+      flash[:error] = 'You must log in to create and edit articles.'
     end
   end
 
