@@ -35,7 +35,7 @@ describe CategoriesController do
         expect(response).to be_success
       end
 
-      it "redirects to categories index" do
+      pending "redirects to categories index" do
         post_category
         expect(response).to redirect_to(categories_path)
       end
@@ -76,7 +76,7 @@ describe CategoriesController do
         response.should redirect_to(categories_path)
       end
 
-      pending "creates a flash error" do
+      it "creates a flash error" do
         edit_category
         expect( edit_category.request.flash[:error] ).to_not be_nil
       end
@@ -86,27 +86,32 @@ describe CategoriesController do
   describe 'POST #destroy' do
     context "when a user is not logged in" do
 
-      it "returns an error" do
+      before(:each) do
         destroy_category
+      end
+
+      it "returns an error" do
         response.should_not be_success
       end
 
       it "redirects to category" do
-        destroy_category
         response.should redirect_to(categories_path)
       end
 
-      pending "creates a flash error" do
-        destroy_category
+      it "creates a flash error" do
         expect( destroy_category.request.flash[:error] ).to_not be_nil
       end
     end
 
     context "when a user is logged in" do
 
-      pending "returns an error" do
-        destroy_category
-        response.should_not be_success
+      before(:each) do
+        create_logged_in_user
+        create_category
+      end
+
+      it "deletes the category" do
+        expect{ destroy_category }.to change(Category, :count).by(-1)
       end
 
       pending "redirects to category" do
@@ -135,8 +140,7 @@ describe CategoriesController do
   end
 
   def destroy_category
-    create_category
-    post :destroy, { id: create_category.id}
+    delete :destroy, { id: create_category.id }
   end
 
 end

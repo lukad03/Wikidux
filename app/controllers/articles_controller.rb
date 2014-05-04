@@ -47,7 +47,7 @@ class ArticlesController < ApplicationController
   def require_login
     unless current_user
       redirect_to articles_path
-      flash[:error] = 'You must log in to create and edit articles.'
+      flash[:error] = 'You must log in first.'
     end
   end
 

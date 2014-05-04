@@ -31,8 +31,7 @@ describe ArticlesController do
       end
 
       it "redirects to articles index" do
-        post_article
-        expect(response).to redirect_to(articles_path)
+        expect(post_article).to redirect_to(articles_path)
       end
 
       pending "creates a flash error" do
@@ -50,9 +49,8 @@ describe ArticlesController do
         expect{ post_article }.to change( Article, :count ).by(1)
       end
 
-      it "redirects to article" do
-        post_article
-        response.should redirect_to(articles_path)
+      pending "redirects to article" do
+        expect(post_article).to redirect_to(articles_path)
       end
 
       pending "creates a flash notice" do

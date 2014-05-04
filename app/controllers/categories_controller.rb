@@ -54,7 +54,7 @@ class CategoriesController < ApplicationController
   def require_login
     unless current_user
       redirect_to categories_path
-      flash[:error] = 'You must log in to create and edit categories.'
+      flash[:error] = 'You must log in first.'
     end
   end
 
