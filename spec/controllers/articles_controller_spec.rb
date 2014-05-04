@@ -32,7 +32,7 @@ describe ArticlesController do
 
       it "redirects to articles index" do
         post_article
-        response.should redirect_to(articles_path)
+        expect(response).to redirect_to(articles_path)
       end
 
       pending "creates a flash error" do

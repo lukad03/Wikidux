@@ -22,6 +22,28 @@ describe CategoriesController do
   end
 
   describe 'POST #create' do
+
+    context "when a user is logged in" do
+
+      before(:all) do
+        create_logged_in_user
+      end
+
+      it "creates the category" do
+        post_category
+        expect(response).to be_success
+      end
+
+      it "redirects to categories index" do
+        post_category
+        expect(response).to redirect_to(categories_path)
+      end
+
+      pending "creates a flash notice" do
+        expect( post_category.request.flash[:notice] ).to_not be_nil
+      end
+    end
+
     context "when a user is not logged in" do
 
       it "returns an error" do
@@ -31,7 +53,7 @@ describe CategoriesController do
 
       it "redirects to categories index" do
         post_category
-        response.should redirect_to(categories_path)
+        expect(response).to redirect_to(categories_path)
       end
 
       it "creates a flash error" do
