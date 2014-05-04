@@ -14,7 +14,6 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
-    @article.categories.build
   end
 
   def create

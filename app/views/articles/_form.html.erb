@@ -12,14 +12,15 @@
     </div>
   </div>
 
-   <%  form_for :categories do |category| %>
-    <div class="control-group">
-      <%= category.label :category_name, "Category" %>
-      <div class="controls">
-        <%= category.collection_select :category, Category.all, :id, :name, {prompt: "Select a category"}, {class: "form-control"} %>
-      </div>
+  <div class="control-group">
+    <div class="controls">
+      <select name="post[author_id]">
+        <% Category.all.each do |cat| %>
+            <option value="<%= cat.id %>"><%= cat.name %></option>
+        <% end %>
+      </select>
     </div>
-   <% end %>
+  </div>
 
 
   <div class="form-actions">
