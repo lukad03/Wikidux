@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   before_filter :require_login,
-    :only => [:new, :edit]
+    :only => [:new, :create, :edit, :update, :destroy]
 
   def index
     @categories = Category.all
@@ -22,7 +22,6 @@ class CategoriesController < ApplicationController
       flash[:notice] = 'Your new category has been created!'
     else
       flash[:error] = 'Your category failed to be created!'
-      redirect_to :new
     end
   end
 
@@ -32,7 +31,7 @@ class CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-    if @category.update_attributes(params[:category])
+    if @category.update_attributes(category_params)
       redirect_to categories_path
       flash[:notice] = 'Your new category has been created!'
     else
@@ -42,6 +41,12 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
+    @category = Category.find(params[:id])
+    if @category.destroy
+      redirect_to categories_path, :flash => { :success => "User destroyed." }
+    else
+      redirect_to @category, :flash => { :error => "Category failed to destroy" }
+    end
   end
 
   private

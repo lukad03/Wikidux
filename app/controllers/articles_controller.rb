@@ -22,7 +22,7 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
-    if @article.update_attributes(params[:article])
+    if @article.update_attributes(article_params)
       redirect_to @article
       flash[:notice] = 'Your article has been edited!'
     else

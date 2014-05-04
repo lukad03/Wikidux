@@ -26,7 +26,8 @@ describe CategoriesController do
 
     context "when a user is logged in" do
 
-      before(:all) do
+      before(:each) do
+        User.destroy_all
         create_logged_in_user
       end
 
@@ -63,15 +64,15 @@ describe CategoriesController do
     end
   end
 
-  describe 'PATCH #edit' do
+  describe 'PATCH #update' do
     context "when a user is not logged in" do
 
-      pending "returns an error" do
+      it "returns an error" do
         edit_category
         response.should_not be_success
       end
 
-      pending "redirects to edit path" do
+      it "redirects to edit path" do
         edit_category
         response.should redirect_to(categories_path)
       end
@@ -83,17 +84,60 @@ describe CategoriesController do
     end
   end
 
+  describe 'POST #destroy' do
+    context "when a user is not logged in" do
+
+      it "returns an error" do
+        destroy_category
+        response.should_not be_success
+      end
+
+      it "redirects to category" do
+        destroy_category
+        response.should redirect_to(categories_path)
+      end
+
+      pending "creates a flash error" do
+        destroy_category
+        expect( destroy_category.request.flash[:error] ).to_not be_nil
+      end
+    end
+
+    context "when a user is logged in" do
+
+      pending "returns an error" do
+        destroy_category
+        response.should_not be_success
+      end
+
+      pending "redirects to category" do
+        destroy_category
+        response.should redirect_to(categories_path)
+      end
+
+      pending "creates a flash error" do
+        destroy_category
+        expect( edit_category.request.flash[:error] ).to_not be_nil
+      end
+    end
+  end
+
   def create_category
     create(:category)
   end
 
   def post_category
-    post :new, category: create(:category)
+    post :create, category: create(:category).attributes
   end
 
   def edit_category
     create_category
-    patch :update, id: create_category.id, category: { :name => 'Bollocks' }
+    patch :update, { id: create_category.id, category: { :name => 'Bollocks' } }
+  end
+
+  def destroy_category
+    create_category
+    post :destroy, { id: create_category.id}
   end
 
 end

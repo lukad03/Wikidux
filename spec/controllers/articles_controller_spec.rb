@@ -42,7 +42,7 @@ describe ArticlesController do
 
     context "when a user is logged in" do
 
-      before(:all) do
+      before(:each) do
         create_logged_in_user
       end
 
@@ -56,7 +56,7 @@ describe ArticlesController do
       end
 
       pending "creates a flash notice" do
-        expect( post_article.request.flash[:notice] ).to_not be_nil
+        flash[:notice].should =~ /Your article has been posted/i
       end
     end
   end
