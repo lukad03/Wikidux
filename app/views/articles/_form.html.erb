@@ -1,19 +1,29 @@
-<%= form_for @article, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @article, :html => { :class => 'form-horizontal' } do |article| %>
   <div class="control-group">
-    <%= f.label :title, :class => 'control-label' %>
+    <%= article.label :title, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :title, :class => 'text_field' %>
+      <%= article.text_field :title, :class => 'text_field' %>
     </div>
   </div>
   <div class="control-group">
-    <%= f.label :content, :class => 'control-label' %>
+    <%= article.label :content, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :content, :class => 'text_field' %>
+      <%= article.text_field :content, :class => 'text_field' %>
     </div>
   </div>
 
+   <%  form_for :categories do |category| %>
+    <div class="control-group">
+      <%= category.label :category_name, "Category" %>
+      <div class="controls">
+        <%= category.collection_select :category, Category.all, :id, :name, {prompt: "Select a category"}, {class: "form-control"} %>
+      </div>
+    </div>
+   <% end %>
+
+
   <div class="form-actions">
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= article.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 articles_path, :class => 'btn' %>
   </div>

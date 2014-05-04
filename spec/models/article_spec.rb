@@ -15,4 +15,8 @@ describe Article do
 
   it { should belong_to(:user) }
 
+  it { should have_many(:article_categories) }
+
+  it { should have_many(:categories).through (:article_categories) }
+
 end
