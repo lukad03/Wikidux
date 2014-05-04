@@ -18,6 +18,10 @@ class ArticlesController < ApplicationController
 
   def edit
     @article = Article.find(params[:id])
+  end
+
+  def update
+    @article = Article.find(params[:id])
     if @article.save
       redirect_to @article
       flash[:notice] = 'Your article has been edited!'

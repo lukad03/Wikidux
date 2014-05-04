@@ -27,6 +27,18 @@ class CategoriesController < ApplicationController
   end
 
   def edit
+    @category = Category.find(params[:id])
+  end
+
+  def update
+    @category = Category.find(params[:id])
+    if @category.update_attributes(params[:category])
+      redirect_to categories_path
+      flash[:notice] = 'Your new category has been created!'
+    else
+      flash[:error] = 'Your category failed to be created!'
+      redirect_to :new
+    end
   end
 
   def destroy
