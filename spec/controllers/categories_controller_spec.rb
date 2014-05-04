@@ -27,7 +27,6 @@ describe CategoriesController do
     context "when a user is logged in" do
 
       before(:each) do
-        User.destroy_all
         create_logged_in_user
       end
 
