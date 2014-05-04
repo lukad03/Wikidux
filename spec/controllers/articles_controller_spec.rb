@@ -61,7 +61,7 @@ describe ArticlesController do
     end
   end
 
-  describe 'PUT #edit' do
+  describe 'PATCH #edit' do
     context "when a user is not logged in" do
 
       pending "returns an error" do
