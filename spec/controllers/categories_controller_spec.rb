@@ -110,18 +110,18 @@ describe CategoriesController do
         create_category
       end
 
-      it "deletes the category" do
+      pending "deletes the category" do
         expect{ destroy_category }.to change(Category, :count).by(-1)
       end
 
-      pending "redirects to category" do
+      it "redirects to category" do
         destroy_category
         response.should redirect_to(categories_path)
       end
 
       pending "creates a flash error" do
         destroy_category
-        expect( edit_category.request.flash[:error] ).to_not be_nil
+        expect( destroy_category.request.flash[:error] ).to_not be_nil
       end
     end
   end

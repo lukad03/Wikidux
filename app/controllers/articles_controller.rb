@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
 
   before_filter :require_login,
-    :only => [:new, :edit]
+    :only => [:new, :create, :edit, :update]
 
   def index
     flash.keep
@@ -16,21 +16,6 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
 
-  def edit
-    @article = Article.find(params[:id])
-  end
-
-  def update
-    @article = Article.find(params[:id])
-    if @article.update_attributes(article_params)
-      redirect_to @article
-      flash[:notice] = 'Your article has been edited!'
-    else
-      flash[:error] = 'Your edits did not save. Please try again.'
-      redirect_to :edit
-    end
-  end
-
   def create
     @article = Article.create(article_params)
     if @article.save
@@ -39,6 +24,30 @@ class ArticlesController < ApplicationController
     else
       flash[:error] = 'Your article failed to post!'
       redirect_to :new
+    end
+  end
+
+  def edit
+    @article = Article.find(params[:id])
+  end
+
+  def update
+    @article = Article.find(params[:id])
+    if @article.update_attributes(article_params)
+      flash[:success] = 'Your article has been edited!'
+      redirect_to @article
+    else
+      flash[:error] = 'Your edits did not save. Please try again.'
+      redirect_to article_path
+    end
+  end
+
+  def destroy
+    @article = Article.find(params[:id])
+    if @article.destroy
+      redirect_to articles_path, :flash => { :success => "Article deleted!" }
+    else
+      redirect_to @article, :flash => { :error => "Article failed to be deleted." }
     end
   end
 

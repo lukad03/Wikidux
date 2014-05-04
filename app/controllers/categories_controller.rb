@@ -43,9 +43,9 @@ class CategoriesController < ApplicationController
   def destroy
     @category = Category.find(params[:id])
     if @category.destroy
-      redirect_to categories_path, :flash => { :success => "User destroyed." }
+      redirect_to categories_path, :flash => { :success => "Category deleted!" }
     else
-      redirect_to @category, :flash => { :error => "Category failed to destroy" }
+      redirect_to @category, :flash => { :error => "Category failed to be deleted." }
     end
   end
 

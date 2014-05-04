@@ -23,22 +23,6 @@ describe ArticlesController do
 
   describe 'POST #create' do
 
-    context "when a user is not logged in" do
-
-      it "returns an error" do
-        post_article
-        response.should_not be_success
-      end
-
-      it "redirects to articles index" do
-        expect(post_article).to redirect_to(articles_path)
-      end
-
-      pending "creates a flash error" do
-        expect( post_article.request.flash[:error] ).to_not be_nil
-      end
-    end
-
     context "when a user is logged in" do
 
       before(:each) do
@@ -57,27 +41,85 @@ describe ArticlesController do
         flash[:notice].should =~ /Your article has been posted/i
       end
     end
-  end
 
-  describe 'PATCH #edit' do
     context "when a user is not logged in" do
 
-      pending "returns an error" do
-        create_article
-        edit_article
+      it "returns an error" do
+        post_article
         response.should_not be_success
       end
 
-      pending "redirects to edit path" do
+      it "redirects to articles index" do
+        expect(post_article).to redirect_to(articles_path)
+      end
+
+      pending "creates a flash error" do
+        expect( post_article.request.flash[:error] ).to_not be_nil
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    context "when a user is not logged in" do
+
+      before(:each) do
         create_article
         edit_article
+      end
+
+      it "returns an error" do
+        response.should_not be_success
+      end
+
+      it "redirects to articles path" do
+        response.should redirect_to(articles_path)
+      end
+
+      it "creates a flash error" do
+        expect( edit_article.request.flash[:error] ).to_not be_nil
+      end
+    end
+  end
+
+  describe 'POST #destroy' do
+    context "when a user is not logged in" do
+
+      before(:each) do
+        destroy_article
+      end
+
+      it "returns an error" do
+        response.should_not be_success
+      end
+
+      it "redirects to article" do
         response.should redirect_to(articles_path)
       end
 
       pending "creates a flash error" do
+        expect( destroy_article.request.flash[:error] ).to_not be_nil
+      end
+    end
+
+    context "when a user is logged in" do
+
+      before(:each) do
+        create_logged_in_user
         create_article
-        edit_article
-        expect( edit_article.request.flash[:error] ).to_not be_nil
+      end
+
+      pending "deletes the article" do
+        expect{ destroy_article }.to change(Article, :count).by(-1)
+      end
+
+      it "redirects to article" do
+        destroy_article
+        response.should redirect_to(articles_path)
+      end
+
+      pending "creates a flash error" do
+        destroy_article
+        expect( destroy_article.request.flash[:error] ).to_not be_nil
       end
     end
   end
@@ -91,6 +133,10 @@ describe ArticlesController do
   end
 
   def edit_article
-    patch :update, { id: create_article.id, title: "Smoked Sausage", content: create_article.content}
+    patch :update, { id: create_article.id, article: { title: "Smoked Sausage", content: create_article.content } }
+  end
+
+  def destroy_article
+    delete :destroy, { id: create_article.id }
   end
 end
