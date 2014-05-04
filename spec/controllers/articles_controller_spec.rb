@@ -42,15 +42,16 @@ describe ArticlesController do
 
     context "when a user is logged in" do
 
-      it "creates an article" do
+      before(:all) do
         create_logged_in_user
+      end
+
+      it "creates an article" do
         expect{ post_article }.to change( Article, :count ).by(1)
       end
 
       it "redirects to article" do
-        create_logged_in_user
         post_article
-
         response.should redirect_to(articles_path)
       end
 

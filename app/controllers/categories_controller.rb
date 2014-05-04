@@ -4,6 +4,7 @@ class CategoriesController < ApplicationController
     :only => [:new, :edit]
 
   def index
+    @categories = Category.all
   end
 
   def show
@@ -15,6 +16,14 @@ class CategoriesController < ApplicationController
   end
 
   def create
+    @category = Category.create(category_params)
+    if @category.save
+      redirect_to categories_path
+      flash[:notice] = 'Your new category has been created!'
+    else
+      flash[:error] = 'Your category failed to be created!'
+      redirect_to :new
+    end
   end
 
   def edit

@@ -14,10 +14,9 @@ describe CategoriesController do
 
     context 'when a category does exist' do
       it "returns the category" do
-          category = create(:category)
-
-          get :show, {id: category.id, name: category.name}
-          response.should be_success
+        create_category
+        get :show, {id: create_category.id, name: create_category.name}
+        response.should be_success
       end
     end
   end
@@ -41,7 +40,39 @@ describe CategoriesController do
     end
   end
 
+  describe 'PUT #edit' do
+    context "when a user is not logged in" do
+
+      it "returns an error" do
+        create_category
+        edit_category
+        response.should_not be_success
+      end
+
+      it "redirects to edit path" do
+        create_category
+        edit_category
+        response.should redirect_to(categories_path)
+      end
+
+      it "creates a flash error" do
+        create_category
+        edit_category
+        expect( edit_category.request.flash[:error] ).to_not be_nil
+      end
+    end
+  end
+
+  def create_category
+    create(:category)
+  end
+
   def post_category
     post :new, category: create(:category)
   end
+
+  def edit_category
+    post :edit, { id: create_category.id, name: "Deli Meats"}
+  end
+
 end
