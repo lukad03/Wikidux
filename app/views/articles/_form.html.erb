@@ -12,15 +12,11 @@
     </div>
   </div>
 
-  <div class="control-group">
-    <div class="controls">
-      <select name="post[author_id]">
-        <% Category.all.each do |cat| %>
-            <option value="<%= cat.id %>"><%= cat.name %></option>
-        <% end %>
-      </select>
-    </div>
-  </div>
+  <%= article.fields_for :article_categories do |article_category| %>
+    <%= article_category.fields_for :categories do |category| %>
+      <%= category.select :category_ids, Category.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
+    <% end %>
+  <% end %>
 
 
   <div class="form-actions">

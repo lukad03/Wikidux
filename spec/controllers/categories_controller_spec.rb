@@ -7,8 +7,8 @@ describe CategoriesController do
 
     context 'when a category does exist' do
       it "returns the category" do
-        create_category
-        get :show, {id: create_category.id, name: create_category.name}
+        category
+        get :show, {id: category.id, name: category.name}
         response.should be_success
       end
     end
@@ -107,14 +107,14 @@ describe CategoriesController do
 
       before(:each) do
         create_logged_in_user
-        create_category
+        category
       end
 
-      pending "deletes the category" do
+      it "deletes the category" do
         expect{ destroy_category }.to change(Category, :count).by(-1)
       end
 
-      it "redirects to category" do
+      pending "redirects to category" do
         destroy_category
         response.should redirect_to(categories_path)
       end
@@ -126,7 +126,7 @@ describe CategoriesController do
     end
   end
 
-  def create_category
+  def category
     create(:category)
   end
 
@@ -135,12 +135,12 @@ describe CategoriesController do
   end
 
   def edit_category
-    create_category
-    patch :update, { id: create_category.id, category: { :name => 'Bollocks' } }
+    category
+    patch :update, { id: category.id, category: { :name => 'Bollocks' } }
   end
 
   def destroy_category
-    delete :destroy, { id: create_category.id }
+    delete :destroy, { id: category }
   end
 
 end

@@ -45,7 +45,7 @@ class CategoriesController < ApplicationController
     if @category.destroy
       redirect_to categories_path, :flash => { :success => "Category deleted!" }
     else
-      redirect_to @category, :flash => { :error => "Category failed to be deleted." }
+      redirect_to @category, :flash => { :error => "Category failed to delete." }
     end
   end
 
