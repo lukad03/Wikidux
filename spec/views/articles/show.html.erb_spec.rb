@@ -7,7 +7,7 @@ describe 'articles/show.html.erb' do
 
     render
 
-    expect(rendered).to match(article.title)
-    expect(rendered).to match(article.content)
+    expect(rendered).to have_text(article.title)
+    expect(rendered).to have_text(article.content)
   end
 end

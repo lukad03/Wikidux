@@ -2,7 +2,7 @@ require "spec_helper"
 
 feature 'Article creation' do
 
-  pending 'user logs in and creates an article' do
+  scenario 'user logs in and creates an article' do
     user = create(:user)
     login_as(user, :scope => :user)
     category = create(:category, :name => 'Sweet Category')
@@ -10,7 +10,7 @@ feature 'Article creation' do
     visit '/articles/new'
     fill_in 'Title', with: 'Interesting Title'
     fill_in 'Content', with: 'Even more interesting article!'
-    select('Sweet Category', :from => 'Category')
+    select('Sweet Category', :from => 'article_category_ids')
 
     click_button 'Create Article'
 

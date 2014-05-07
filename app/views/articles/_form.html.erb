@@ -11,12 +11,7 @@
       <%= article.text_field :content, :class => 'text_field' %>
     </div>
   </div>
-
-  <%= article.fields_for :article_categories do |article_category| %>
-    <%= article_category.fields_for :categories do |category| %>
-      <%= category.select :category_ids, Category.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
-    <% end %>
-  <% end %>
+  <%= article.select :category_ids, Category.all.collect {|x| [x.name, x.id]}, {}, multiple: true %>
 
 
   <div class="form-actions">
