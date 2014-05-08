@@ -10,7 +10,6 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
-    @categories = @article.categories
   end
 
   def new
@@ -21,7 +20,7 @@ class ArticlesController < ApplicationController
     @article = Article.create(article_params)
     if @article.save
       redirect_to articles_path
-      flash[:notice] = 'Your article has been posted!'
+      flash[:success] = 'Your article has been posted!'
     else
       flash[:error] = 'Your article failed to post!'
       redirect_to :new

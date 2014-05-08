@@ -34,11 +34,12 @@ describe ArticlesController do
       end
 
       pending "redirects to article" do
-        expect(post_article).to redirect_to(articles_path)
+        post_article
+        response.should redirect_to(articles_path)
       end
 
-      pending "creates a flash notice" do
-        flash[:notice].should =~ /Your article has been posted/i
+      it "shows a flash success" do
+        expect{ post_article.request.flash[:success] }.to_not be_nil
       end
     end
 
@@ -53,8 +54,8 @@ describe ArticlesController do
         expect(post_article).to redirect_to(articles_path)
       end
 
-      pending "creates a flash error" do
-        expect( post_article.request.flash[:error] ).to_not be_nil
+      it "creates a flash error" do
+        expect{ post_article.request.flash[:error] }.to_not be_nil
       end
     end
   end
@@ -96,8 +97,8 @@ describe ArticlesController do
         response.should redirect_to(articles_path)
       end
 
-      pending "creates a flash error" do
-        expect( destroy_article.request.flash[:error] ).to_not be_nil
+      it "creates a flash error" do
+        expect{ destroy_article.request.flash[:error] }.to_not be_nil
       end
     end
 
@@ -108,8 +109,9 @@ describe ArticlesController do
         create_article
       end
 
-      pending "deletes the article" do
-        expect{ destroy_article }.to change(Article, :count).by(-1)
+      it "deletes the article" do
+        article = create(:article)
+        expect{ delete :destroy, { id: article } }.to change(Article, :count).by(-1)
       end
 
       it "redirects to article" do
@@ -117,9 +119,8 @@ describe ArticlesController do
         response.should redirect_to(articles_path)
       end
 
-      pending "creates a flash error" do
-        destroy_article
-        expect( destroy_article.request.flash[:error] ).to_not be_nil
+      it "creates a flash error" do
+        expect{ destroy_article.request.flash[:success] }.to_not be_nil
       end
     end
   end
@@ -129,7 +130,7 @@ describe ArticlesController do
   end
 
   def post_article
-    post :new, article: create_article
+    post :new, article: { id: create_article.id }
   end
 
   def edit_article
@@ -137,6 +138,6 @@ describe ArticlesController do
   end
 
   def destroy_article
-    delete :destroy, { id: create_article.id }
+    delete :destroy, { id: create_article }
   end
 end

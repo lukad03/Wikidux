@@ -30,18 +30,16 @@ describe CategoriesController do
         create_logged_in_user
       end
 
-      it "creates the category" do
-        post_category
-        expect(response).to be_success
+      it "creates a category" do
+        expect{ post_category }.to change( Category, :count ).by(1)
       end
 
       pending "redirects to categories index" do
-        post_category
-        expect(response).to redirect_to(categories_path)
+        expect{ post_category }.to redirect_to(categories_path)
       end
 
-      pending "creates a flash notice" do
-        expect( post_category.request.flash[:notice] ).to_not be_nil
+      it "creates a flash notice" do
+        expect{ post_category.request.flash[:success] }.to_not be_nil
       end
     end
 
@@ -107,21 +105,20 @@ describe CategoriesController do
 
       before(:each) do
         create_logged_in_user
-        category
       end
 
       it "deletes the category" do
-        expect{ destroy_category }.to change(Category, :count).by(-1)
+        cat = create(:category)
+        expect{ delete :destroy, { id: cat } }.to change(Category, :count).by(-1)
       end
 
-      pending "redirects to category" do
+      it "redirects to category" do
         destroy_category
         response.should redirect_to(categories_path)
       end
 
-      pending "creates a flash error" do
-        destroy_category
-        expect( destroy_category.request.flash[:error] ).to_not be_nil
+      it "creates a flash error" do
+        expect( destroy_category.request.flash[:success] ).to_not be_nil
       end
     end
   end
@@ -130,8 +127,12 @@ describe CategoriesController do
     create(:category)
   end
 
+  def build_category
+    build(:category)
+  end
+
   def post_category
-    post :create, category: create(:category).attributes
+    post :create, category: {id: category}
   end
 
   def edit_category
