@@ -33,9 +33,9 @@ describe ArticlesController do
         expect{ post_article }.to change( Article, :count ).by(1)
       end
 
-      pending "redirects to article" do
-        post_article
-        response.should redirect_to(articles_path)
+      it "redirects to article" do
+        article = build(:article)
+        expect{ post :new, article: (article) }.to redirect_to(articles_path)
       end
 
       it "shows a flash success" do

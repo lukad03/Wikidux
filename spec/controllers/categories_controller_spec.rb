@@ -34,8 +34,9 @@ describe CategoriesController do
         expect{ post_category }.to change( Category, :count ).by(1)
       end
 
-      pending "redirects to categories index" do
-        expect{ post_category }.to redirect_to(categories_path)
+      it "redirects to categories index" do
+        cat = create(:category)
+        expect{ post :category, { id: cat } }.to redirect_to(categories_path)
       end
 
       it "creates a flash notice" do
